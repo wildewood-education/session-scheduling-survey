@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wildewood Education — Scheduling Survey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- The ?v= on survey.css/survey.js busts browser/CDN caching. Bump it
+       (e.g. to today's date) any time either file changes, or visitors may
+       keep running stale JS against new HTML after a deploy. -->
+  <link rel="stylesheet" href="survey.css?v=20260821">
+</head>
+<body>
+
+<div class="survey-shell">
+
+  <!-- Header -->
+  <header class="survey-header">
+    <div class="weo-logo">
+      <div class="survey-logo-wrap">
+        <img src="logo.png" alt="Wildewood Education" class="survey-logo-img">
+      </div>
+    </div>
+  </header>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar-wrap" id="progress-wrap">
+    <div class="progress-bar-track">
+      <div class="progress-bar-fill" id="progress-bar" style="width: 20%"></div>
+    </div>
+    <span class="progress-label" id="progress-label">Step 1 of 5</span>
+  </div>
+
+  <main class="survey-main">
+
+    <!-- ─── SECTION 1: WELCOME ──────────────────────── -->
+    <div class="survey-section" id="section-1">
+      <div class="section-hero">
+        <h1 class="section-title">
+          Hi <span class="parent-name">there</span>! 👋
+        </h1>
+        <p class="section-intro">
+          We're so excited to get <strong class="student-name">your student</strong> started at Wildewood.
+        </p>
+      </div>
+
+      <!-- Identity — who's filling this out -->
+      <div id="s1-identity" class="card">
+        <label class="field-label">First, tell us about your family
+          <span class="field-hint">So we know who to build a schedule for.</span>
+        </label>
+        <div style="display:flex;flex-direction:column;gap:.75rem;margin-top:.5rem;">
+          <input type="text"  id="s1-parent-name"  placeholder="Your name (parent / guardian)">
+          <input type="email" id="s1-email"        placeholder="Email address">
+          <input type="text"  id="s1-student-name" placeholder="Student's name">
+        </div>
+      </div>
+
+      <!-- First: meeting vs. survey -->
+      <div class="card">
+        <label class="field-label">How would you like to share your availability?</label>
+        <div class="choice-group stacked">
+          <label class="choice-item">
+            <input type="radio" name="s1-method" value="survey" checked>
+            <span class="choice-body">
+              <span class="choice-icon">📋</span>
+              <span>I'll fill out this quick survey — takes about 3 minutes</span>
+            </span>
+          </label>
+          <label class="choice-item">
+            <input type="radio" name="s1-method" value="meeting">
+            <span class="choice-body">
+              <span class="choice-icon">📅</span>
+              <span>I'd prefer to book a quick meeting to talk it through</span>
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Meeting booking path -->
+      <div id="s1-meeting-path" hidden>
+        <div class="card" style="text-align: center; padding: 1.75rem 1.25rem;">
+          <p class="section-body" style="margin-bottom: 1.25rem;">
+            No problem! Find a time that works for you below.
+          </p>
+          <a href="https://calendar.app.google/w9AnxpKBFktTRNBg9"
+             target="_blank" rel="noopener"
+             class="btn-next" style="display: inline-block; text-decoration: none;">
+            📅 Book a time with Shaina →
+          </a>
+          <p class="section-body" style="margin-top: 1rem; font-size: .85rem;">
+            After booking, feel free to close this page — we'll take it from there!
+          </p>
+        </div>
+      </div>
+
+      <!-- Survey path: term + comm preference + Next -->
+      <div id="s1-survey-path">
+        <!-- Honeypot — hidden from humans, catches bots. Leave empty. -->
+        <input type="text" id="s1-hp" name="website" tabindex="-1" autocomplete="off"
+               aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;">
+
+        <div class="card">
+          <label class="field-label" for="s1-term">What are you scheduling for?</label>
+          <select id="s1-term" class="survey-select">
+            <option value="">Select…</option>
+            <option value="Fall (September-December)">Fall (September–December)</option>
+            <option value="Spring (January-May/June)">Spring (January–May/June)</option>
+            <option value="Winter break">Winter break</option>
+            <option value="Summer">Summer</option>
+            <option value="Entire school year">Entire school year</option>
+            <option value="Other">Other</option>
+            <option value="Unsure">Not sure yet</option>
+          </select>
+        </div>
+
+        <div class="card">
+          <label class="field-label">How do you prefer we stay in touch?</label>
+          <div class="choice-group stacked">
+            <label class="choice-item">
+              <input type="radio" name="s1-comm" value="Text">
+              <span class="choice-body">
+                <span class="choice-icon">💬</span>
+                <span>Text</span>
+              </span>
+            </label>
+            <label class="choice-item">
+              <input type="radio" name="s1-comm" value="Email">
+              <span class="choice-body">
+                <span class="choice-icon">✉️</span>
+                <span>Email</span>
+              </span>
+            </label>
+            <label class="choice-item">
+              <input type="radio" name="s1-comm" value="Phone">
+              <span class="choice-body">
+                <span class="choice-icon">📞</span>
+                <span>Phone Call</span>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Phone — revealed only when Text or Phone Call is chosen -->
+        <div class="card" id="s1-phone-card" hidden>
+          <label class="field-label" for="s1-phone">What's the best number to reach you?</label>
+          <input type="tel" id="s1-phone" placeholder="(555) 123-4567">
+        </div>
+
+        <div class="section-nav">
+          <button class="btn-next" id="s1-next">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── SECTION 2: SCHEDULING STYLE ────────────── -->
+    <div class="survey-section" id="section-2" hidden>
+      <h2 class="section-title">Your Scheduling Style</h2>
+      <p class="section-body">No wrong answers — this helps us match you with the right setup.</p>
+
+      <!-- Q1 -->
+      <div class="card q-card">
+        <p class="q-text">How important is it that sessions happen at the same time every week?</p>
+        <div class="choice-group stacked">
+          <label class="choice-item">
+            <input type="radio" name="q1" value="0">
+            <span class="choice-body"><span>Very — a consistent schedule helps us stay on track</span></span>
+          </label>
+          <label class="choice-item">
+            <input type="radio" name="q1" value="1">
+            <span class="choice-body"><span>Somewhat — we like a rhythm but can flex occasionally</span></span>
+          </label>
+          <label class="choice-item">
+            <input type="radio" name="q1" value="2">
+            <span class="choice-body"><span>Not very — we're fine scheduling week by week</span></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="card q-card">
+        <p class="q-text">How important is it that your child works with the same tutor each time?</p>
+        <div class="choice-group stacked">
+          <label class="choice-item">
+            <input type="radio" name="q2" value="0">
+            <span class="choice-body"><span>Very — we want to build a relationship with one person</span></span>
+          </label>
+          <label class="choice-item">
+            <input type="radio" name="q2" value="1">
+            <span class="choice-body"><span>Somewhat — nice, but not essential</span></span>
+          </label>
+          <label class="choice-item">
+            <input type="radio" name="q2" value="2">
+            <span class="choice-body"><span>We just need great help — whoever's available works</span></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="card q-card">
+        <p class="q-text">How far ahead do you typically know your schedule?</p>
+        <div class="choice-group stacked">
+          <label class="choice-item">
+            <input type="radio" name="q3" value="0">
+            <span class="choice-body"><span>We can commit to a recurring weekly time slot</span></span>
+          </label>
+          <label class="choice-item">
+            <input type="radio" name="q3" value="1">
+            <span class="choice-body"><span>We usually know 1-2 weeks ahead</span></span>
+          </label>
+          <label class="choice-item">
+            <input type="radio" name="q3" value="2">
+            <span class="choice-body"><span>Our schedule changes a lot — we prefer booking as we go</span></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="section-nav">
+        <button class="btn-back" id="s2-back">← Back</button>
+        <button class="btn-next" id="s2-next">Next →</button>
+      </div>
+    </div>
+
+    <!-- ─── SECTION 3: AVAILABILITY ─────────────────── -->
+    <div class="survey-section" id="section-3" hidden>
+      <h2 class="section-title">Your Availability</h2>
+      <p class="section-body">Tap everything that could work — we'll find the best fit from there.</p>
+
+      <!-- Days + times, one unified accordion — tap a day to set its times right there -->
+      <div class="card">
+        <label class="field-label">Which days work, and when?
+          <span class="field-hint">Tap a day to mark it available and choose times for it. Schedules often look different day to day — that's expected.</span>
+        </label>
+        <div id="day-accordion"></div>
+      </div>
+
+      <!-- Hard constraints -->
+      <div class="card">
+        <label class="field-label" for="s3-constraints">
+          Any days, times, or date ranges that are <em>never</em> available?
+        </label>
+        <textarea id="s3-constraints" rows="3"
+          placeholder="e.g. No Tuesdays, no mornings, away the last two weeks of July"></textarea>
+      </div>
+
+      <!-- Schedule horizon -->
+      <div class="card">
+        <label class="field-label">Do you know your schedule only through a certain date?</label>
+        <div class="choice-group">
+          <label class="choice-item">
+            <input type="radio" name="s3-sched-known" value="yes">
+            <span class="choice-body"><span>Yes</span></span>
+          </label>
+          <label class="choice-item">
+            <input type="radio" name="s3-sched-known" value="no" checked>
+            <span class="choice-body"><span>No — our schedule is fairly open</span></span>
+          </label>
+        </div>
+        <div id="sched-through-container" hidden style="margin-top:.75rem;">
+          <label class="field-label" for="s3-sched-through">We know our schedule through:</label>
+          <input type="text" id="s3-sched-through" placeholder="e.g. end of August, Labor Day">
+        </div>
+      </div>
+
+      <!-- Frequency -->
+      <div class="card">
+        <label class="field-label">How often are you hoping to meet?</label>
+        <div class="choice-group stacked">
+          <label class="choice-item">
+            <input type="radio" name="s3-frequency" value="1x/week">
+            <span class="choice-body"><span>1× per week</span></span>
+          </label>
+          <label class="choice-item">
+            <input type="radio" name="s3-frequency" value="2x/week">
+            <span class="choice-body"><span>2× per week</span></span>
+          </label>
+          <label class="choice-item">
+            <input type="radio" name="s3-frequency" value="Intensive">
+            <span class="choice-body"><span>Intensive (3+ times per week)</span></span>
+          </label>
+          <label class="choice-item">
+            <input type="radio" name="s3-frequency" value="Not sure yet" checked>
+            <span class="choice-body"><span>Not sure yet</span></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="section-nav">
+        <button class="btn-back" id="s3-back">← Back</button>
+        <button class="btn-next" id="s3-next">Next →</button>
+      </div>
+    </div>
+
+    <!-- ─── SECTION 4: ANYTHING ELSE ─────────────────── -->
+    <div class="survey-section" id="section-4" hidden>
+      <h2 class="section-title">Anything Else?</h2>
+      <p class="section-body">This is optional — but the more we know, the better we can plan.</p>
+
+      <div class="card">
+        <label class="field-label" for="s4-notes">
+          Is there anything else we should know before we build your schedule?
+          <span class="field-hint">Upcoming travel, sports seasons, exam dates, anything that affects availability.</span>
+        </label>
+        <textarea id="s4-notes" rows="4"
+          placeholder="Feel free to share anything — or skip ahead if nothing comes to mind!"></textarea>
+      </div>
+
+      <div class="section-nav">
+        <button class="btn-back" id="s4-back">← Back</button>
+        <button class="btn-next" id="s4-next">Review & Submit →</button>
+      </div>
+    </div>
+
+    <!-- ─── SECTION 5: SUMMARY ────────────────────────── -->
+    <div class="survey-section" id="section-5" hidden>
+      <h2 class="section-title">Here's What You Shared</h2>
+      <p class="section-body">Take a look — if anything looks off, you can go back and fix it.</p>
+
+      <div class="card summary-card" id="summary-text">
+        <!-- Populated by JS -->
+      </div>
+
+      <div class="section-nav stacked-nav">
+        <button class="btn-next" id="s5-submit">✅ This looks right — submit</button>
+        <button class="btn-back" id="s5-edit">✏️ I need to change something</button>
+      </div>
+    </div>
+
+    <!-- ─── SECTION 6: THANK YOU ──────────────────────── -->
+    <div class="survey-section" id="section-6" hidden>
+      <div class="thankyou-hero">
+        <div class="thankyou-icon">🌿</div>
+        <h2 class="section-title">You're all set, <span class="parent-name">friend</span>!</h2>
+        <p class="section-body">
+          We have everything we need. Our team will review your availability and reach out with a proposed schedule within <strong>1 business day</strong>.
+        </p>
+        <p class="section-body" id="thankyou-copy-note" style="margin-top: .75rem;" hidden>
+          📩 A copy of your responses is on its way to your email.
+        </p>
+        <p class="section-body" style="margin-top: .75rem;">
+          If you have questions in the meantime, just reply to our email or text anytime — we're happy to help.
+        </p>
+        <div class="thankyou-badge">
+          <span>🎉</span> Looking forward to working with <strong class="student-name">your student</strong>!
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="survey-footer">
+    <span>© Wildewood Education · All information stays private within our team.</span>
+  </footer>
+
+</div><!-- .survey-shell -->
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<!-- Config -->
+<script src="firebase-config.js"></script>
+<script src="survey.js?v=20260821"></script>
+
+</body>
+</html>
